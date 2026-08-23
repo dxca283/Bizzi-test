@@ -1,0 +1,200 @@
+{
+  "info": {
+    "_postman_id": "b62b2bbd-ae60-49db-b0bd-ed6a5a90a2ea",
+    "name": "Invoice API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48647101"
+  },
+  "item": [
+    {
+      "name": "1. Invoice CRUD",
+      "item": [
+        {
+          "name": "Create Draft",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();\r",
+                  "\r",
+                  "pm.collectionVariables.set(\"invoiceId\", response.id);\r",
+                  "\r",
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"customerName\": \"Duc Huy\",\r\n  \"customerEmail\": \"a@example.com\",\r\n  \"items\": [\r\n    {\r\n      \"description\": \"Macbook\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 2000\r\n    },\r\n    {\r\n      \"description\": \"Mouse\",\r\n      \"quantity\": 2,\r\n      \"unitPrice\": 50\r\n    }\r\n  ],\r\n  \"taxRate\": 10\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "invoices"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Invoice",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/invoices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "invoices"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update draft",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"reason\": \"Another change\",\r\n  \"customerName\": \"Nguyen Van D\",\r\n  \"items\": [\r\n    {\r\n      \"description\": \"Tai nghe Airpods\",\r\n      \"quantity\": 3,\r\n      \"unitPrice\": 300\r\n    }\r\n  ]\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/invoices/INV-000003/pdf",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "invoices",
+                "INV-000003",
+                "pdf"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Invoice",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Invoice Lifecycle",
+      "item": [
+        {
+          "name": "Issue",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Replace",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Check old Invoice = canceled",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Download PDF",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "invoiceId",
+      "value": ""
+    }
+  ]
+}
