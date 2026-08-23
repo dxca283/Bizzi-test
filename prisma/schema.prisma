@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  CANCELED
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique
+  status        InvoiceStatus @default(DRAFT)
+
+  customerName  String
+  customerEmail String?
+
+  subtotal Decimal @db.Decimal(15, 2)
+  tax      Decimal @db.Decimal(15, 2)
+  total    Decimal @db.Decimal(15, 2)
+
+  issuedAt   DateTime?
+  canceledAt DateTime?
+
+  replacedInvoiceId   String?
+  replacedInvoice     Invoice?  @relation("InvoiceReplacement", fields: [replacedInvoiceId], references: [id])
+  replacementInvoices Invoice[] @relation("InvoiceReplacement")
+
+  items InvoiceItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([replacedInvoiceId])
+}
+
+model InvoiceItem {
+  id        String @id @default(uuid())
+  invoiceId String
+
+  description String
+  quantity    Decimal @db.Decimal(15, 2)
+  unitPrice   Decimal @db.Decimal(15, 2)
+  amount      Decimal @db.Decimal(15, 2)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([invoiceId])
+}
